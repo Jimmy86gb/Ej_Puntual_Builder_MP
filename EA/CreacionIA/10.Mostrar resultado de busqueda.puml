@@ -1,0 +1,139 @@
+@startuml
+actor ":Actor1" as actor
+participant "__btnGetWhereClause: Button\n<i>(from Cargar interfaz grafica)</i>" as __btnGetWhereClause
+participant "app: ButtonHandler\n<i>(from Ejecutar aplicacion)</i>" as app
+participant "__frame: SQLBuilderUI\n<i>(from Cargar interfaz grafica)</i>" as __frame
+participant "__txtSQL: Text\n<i>(from Cargar interfaz grafica)</i>" as __txtSQL
+
+participant "__builder: CandSrchBuilder\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as __builderCand <<Loader Object>>
+participant ": CandSrchBuilder\n<i>(from Obtener creador de interfaz correspondiente)</i>" as anonCand
+
+participant "__builder: EmpSrchBuilder\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as __builderEmp <<Loader Object>>
+participant ": EmpSrchBuilder\n<i>(from Obtener creador de interfaz correspondiente)</i>" as anonEmp
+
+participant "__builder: EnterpriseSrchBuilder\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as __builderEnt <<Loader Object>>
+participant ": EnterpriseSrchBuilder\n<i>(from Obtener creador de interfaz correspondiente)</i>" as anonEnt
+
+actor -> __btnGetWhereClause : Click()
+activate __btnGetWhereClause
+
+__btnGetWhereClause -> app : eventBtnGetWhereClause() : void
+activate app
+
+app -> __frame : selection = getSearchType(self) : String
+activate __frame
+ref over __frame : Obtener tipo de busqueda
+__frame --> app : selection
+deactivate __frame
+
+alt selection != SQLBuilderUI.BLANK
+
+    alt selection == SQLBuilderUI.CANDIDATE
+        
+        group Argumento de la siguiente operacion
+            app -> __builderCand : getSQL(self) : String
+            activate __builderCand
+            __builderCand --> anonCand : <<Redirige a>>
+            activate anonCand
+            
+            ref over anonCand : Obtener resultado correspondiente de busqueda
+            
+            anonCand --> __builderCand : String
+            deactivate anonCand
+            __builderCand --> app : String
+            deactivate __builderCand
+        end
+        
+        app -> __frame : setSQL(self.__builder.getSQL()) : void
+        activate __frame
+        
+        __frame -> __txtSQL : delete(1.0, END) : void
+        activate __txtSQL
+        deactivate __txtSQL
+        
+        __frame -> __txtSQL : insert(END, sql) : void
+        activate __txtSQL
+        deactivate __txtSQL
+        
+        deactivate __frame
+
+    else selection == SQLBuilderUI.EMPLOYER
+        
+        group Argumento de la siguiente operacion
+            app -> __builderEmp : getSQL(self) : String
+            activate __builderEmp
+            __builderEmp --> anonEmp : <<Redirige a>>
+            activate anonEmp
+            
+            ref over anonEmp : Obtener resultado correspondiente de busqueda
+            
+            anonEmp --> __builderEmp : String
+            deactivate anonEmp
+            __builderEmp --> app : String
+            deactivate __builderEmp
+        end
+        
+        app -> __frame : setSQL(self.__builder.getSQL()) : void
+        activate __frame
+        
+        __frame -> __txtSQL : delete(1.0, END) : void
+        activate __txtSQL
+        deactivate __txtSQL
+        
+        __frame -> __txtSQL : insert(END, sql) : void
+        activate __txtSQL
+        deactivate __txtSQL
+        
+        deactivate __frame
+
+    else selection == SQLBuilderUI.ENTERPRISE
+        
+        group Argumento de la siguiente operacion
+            app -> __builderEnt : getSQL(self) : String
+            activate __builderEnt
+            __builderEnt --> anonEnt : <<Redirige a>>
+            activate anonEnt
+            
+            ref over anonEnt : Obtener resultado correspondiente de busqueda
+            
+            anonEnt --> __builderEnt : String
+            deactivate anonEnt
+            __builderEnt --> app : String
+            deactivate __builderEnt
+        end
+        
+        app -> __frame : setSQL(self.__builder.getSQL()) : void
+        activate __frame
+        
+        __frame -> __txtSQL : delete(1.0, END) : void
+        activate __txtSQL
+        deactivate __txtSQL
+        
+        __frame -> __txtSQL : insert(END, sql) : void
+        activate __txtSQL
+        deactivate __txtSQL
+        
+        deactivate __frame
+
+    end
+
+else selection == SQLBuilderUI.BLANK
+
+    app -> __frame : setSQL("Select one option above") : void
+    activate __frame
+    
+    __frame -> __txtSQL : delete(1.0, END) : void
+    activate __txtSQL
+    deactivate __txtSQL
+    
+    __frame -> __txtSQL : insert(END, "Select one option above") : void
+    activate __txtSQL
+    deactivate __txtSQL
+    
+    deactivate __frame
+
+end
+
+deactivate app
+deactivate __btnGetWhereClause
+@enduml

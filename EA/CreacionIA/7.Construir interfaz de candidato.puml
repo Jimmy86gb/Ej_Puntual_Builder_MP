@@ -1,0 +1,45 @@
+@startuml
+participant "director: UIDirector\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as director
+participant "__builder: CandSrchBuilder\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as __builder_ptr <<Loader Object>>
+participant "__builder: CandSrchBuilder\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as __builder_app <<Loader Object>>
+participant ": CandSrchBuilder\n<i>(from Obtener creador de interfaz correspondiente)</i>" as anonCand
+participant "__txtUserName: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtUserName
+participant "__txtSkill: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtSkill
+
+[-> director : build(self) : void
+activate director
+
+director -> __builder_ptr : addUIControls() : void
+activate __builder_ptr
+__builder_ptr --> __builder_app : <<Redirige a>>
+activate __builder_app
+__builder_app --> anonCand : <<Redirige a>>
+activate anonCand
+
+ref over anonCand : Diseño de interfaz de candidato
+
+deactivate anonCand
+deactivate __builder_app
+deactivate __builder_ptr
+
+director -> __builder_ptr : initialize() : void
+activate __builder_ptr
+__builder_ptr --> __builder_app : <<Redirige a>>
+activate __builder_app
+__builder_app --> anonCand : <<Redirige a>>
+activate anonCand
+
+anonCand -> __txtUserName : insert(0, "") : void
+activate __txtUserName
+deactivate __txtUserName
+
+anonCand -> __txtSkill : insert(0, "Internet Tech") : void
+activate __txtSkill
+deactivate __txtSkill
+
+deactivate anonCand
+deactivate __builder_app
+deactivate __builder_ptr
+
+deactivate director
+@enduml

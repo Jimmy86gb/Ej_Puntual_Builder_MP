@@ -1,0 +1,55 @@
+@startuml
+participant "director: UIDirector\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as director
+participant "__builder: EnterpriseSrchBuilder\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as __builder_ptr <<Loader Object>>
+participant "__builder: EnterpriseSrchBuilder\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as __builder_app <<Loader Object>>
+participant ": EnterpriseSrchBuilder\n<i>(from Obtener creador de interfaz correspondiente)</i>" as anonEnt
+participant "__txtEntName: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtEntName
+participant "__txtNIT: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtNIT
+participant "__txtCountry: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtCountry
+participant "__txtAddress: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtAddress
+
+[-> director : build(self) : void
+activate director
+
+director -> __builder_ptr : addUIControls() : void
+activate __builder_ptr
+__builder_ptr --> __builder_app : <<Redirige a>>
+activate __builder_app
+__builder_app --> anonEnt : <<Redirige a>>
+activate anonEnt
+
+ref over anonEnt : Diseño de interfaz de empresa
+
+deactivate anonEnt
+deactivate __builder_app
+deactivate __builder_ptr
+
+director -> __builder_ptr : initialize() : void
+activate __builder_ptr
+__builder_ptr --> __builder_app : <<Redirige a>>
+activate __builder_app
+__builder_app --> anonEnt : <<Redirige a>>
+activate anonEnt
+
+anonEnt -> __txtEntName : insert(0, "") : void
+activate __txtEntName
+deactivate __txtEntName
+
+anonEnt -> __txtNIT : insert(0, "") : void
+activate __txtNIT
+deactivate __txtNIT
+
+anonEnt -> __txtCountry : insert(0, "") : void
+activate __txtCountry
+deactivate __txtCountry
+
+anonEnt -> __txtAddress : insert(0, "") : void
+activate __txtAddress
+deactivate __txtAddress
+
+deactivate anonEnt
+deactivate __builder_app
+deactivate __builder_ptr
+
+deactivate director
+@enduml

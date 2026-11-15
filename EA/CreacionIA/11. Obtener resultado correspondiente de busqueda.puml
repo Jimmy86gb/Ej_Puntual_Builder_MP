@@ -1,0 +1,93 @@
+@startuml
+participant ": CandSrchBuilder\n<i>(from Obtener creador de interfaz correspondiente)</i>" as anonCand
+participant "__cmbExperience: ttk.Combobox\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __cmbExperience_cand
+participant "__txtUserName: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtUserName_cand
+participant "__txtSkill: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtSkill_cand
+
+participant ": EmpSrchBuilder\n<i>(from Obtener creador de interfaz correspondiente)</i>" as anonEmp
+participant "__txtUserName: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtUserName_emp
+participant "__txtCity: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtCity_emp
+participant "__txtRenewal: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtRenewal_emp
+
+participant ": EnterpriseSrchBuilder\n<i>(from Obtener creador de interfaz correspondiente)</i>" as anonEnt
+participant "__txtEntName: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtEntName_ent
+participant "__txtNIT: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtNIT_ent
+participant "__txtCountry: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtCountry_ent
+participant "__txtAddress: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtAddress_ent
+
+alt instanceOf(CandSrchBuilder)
+
+    [-> anonCand : getSQL(self) : String
+    activate anonCand
+
+    anonCand -> __cmbExperience_cand : experience = get(self) : String
+    activate __cmbExperience_cand
+    __cmbExperience_cand --> anonCand : experience
+    deactivate __cmbExperience_cand
+
+    anonCand -> __txtUserName_cand : get(self) : String
+    activate __txtUserName_cand
+    __txtUserName_cand --> anonCand : String
+    deactivate __txtUserName_cand
+
+    anonCand -> __txtSkill_cand : get(self) : String
+    activate __txtSkill_cand
+    __txtSkill_cand --> anonCand : String
+    deactivate __txtSkill_cand
+
+    [<-- anonCand : "Select * from Candidate where Username='" + self.__txtUserName.get() + "' and Experience " + experience + " and Skill='" + self.__txtSkill.get() + "'"
+    deactivate anonCand
+
+else instanceOf(EmpSrchBuilder)
+
+    [-> anonEmp : getSQL(self) : String
+    activate anonEmp
+
+    anonEmp -> __txtUserName_emp : get(self) : String
+    activate __txtUserName_emp
+    __txtUserName_emp --> anonEmp : String
+    deactivate __txtUserName_emp
+
+    anonEmp -> __txtCity_emp : get(self) : String
+    activate __txtCity_emp
+    __txtCity_emp --> anonEmp : String
+    deactivate __txtCity_emp
+
+    anonEmp -> __txtRenewal_emp : get(self) : String
+    activate __txtRenewal_emp
+    __txtRenewal_emp --> anonEmp : String
+    deactivate __txtRenewal_emp
+
+    [<-- anonEmp : "Select * from Employer where Username='"+self.__txtUserName.get()+"' and City='"+self.__txtCity.get()+"' and DateRenewal='"+self.__txtRenewal.get()+"'"
+    deactivate anonEmp
+
+else instanceOf(EnterpriseSrchBuilder)
+
+    [-> anonEnt : getSQL(self) : String
+    activate anonEnt
+
+    anonEnt -> __txtEntName_ent : get(self) : String
+    activate __txtEntName_ent
+    __txtEntName_ent --> anonEnt : String
+    deactivate __txtEntName_ent
+
+    anonEnt -> __txtNIT_ent : get(self) : String
+    activate __txtNIT_ent
+    __txtNIT_ent --> anonEnt : String
+    deactivate __txtNIT_ent
+
+    anonEnt -> __txtCountry_ent : get(self) : String
+    activate __txtCountry_ent
+    __txtCountry_ent --> anonEnt : String
+    deactivate __txtCountry_ent
+
+    anonEnt -> __txtAddress_ent : get(self) : String
+    activate __txtAddress_ent
+    __txtAddress_ent --> anonEnt : String
+    deactivate __txtAddress_ent
+
+    [<-- anonEnt : "Select * from Enterprise where Name='"+self.__txtEntName.get()+"' and NIT='"+self.__txtNIT.get()+"' and Country='"+self.__txtCountry.get()+"' and Address='"+self.__txtAddress.get()+"'"
+    deactivate anonEnt
+
+end
+@enduml

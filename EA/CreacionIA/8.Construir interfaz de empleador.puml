@@ -1,0 +1,71 @@
+@startuml
+participant "director: UIDirector\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as director
+participant "__builder: EmpSrchBuilder\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as __builder_ptr <<Loader Object>>
+participant "__builder: EmpSrchBuilder\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as __builder_app <<Loader Object>>
+participant ": EmpSrchBuilder\n<i>(from Obtener creador de interfaz correspondiente)</i>" as anonEmp
+participant "__txtUserName: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtUserName
+participant "__txtCity: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtCity
+participant "__txtRenewal: Entry\n<i>(from Obtener creador de interfaz correspondiente)</i>" as __txtRenewal
+participant ": time" as time
+
+[-> director : build(self) : void
+activate director
+
+director -> __builder_ptr : addUIControls() : void
+activate __builder_ptr
+__builder_ptr --> __builder_app : <<Redirige a>>
+activate __builder_app
+__builder_app --> anonEmp : <<Redirige a>>
+activate anonEmp
+
+ref over anonEmp : Diseño de interfaz de empleador
+
+deactivate anonEmp
+deactivate __builder_app
+deactivate __builder_ptr
+
+director -> __builder_ptr : initialize() : void
+activate __builder_ptr
+__builder_ptr --> __builder_app : <<Redirige a>>
+activate __builder_app
+__builder_app --> anonEmp : <<Redirige a>>
+activate anonEmp
+
+anonEmp -> __txtUserName : insert(0, "") : void
+activate __txtUserName
+deactivate __txtUserName
+
+group Argumento de la siguiente operacion
+    anonEmp -> time : strftime("%B") : String
+    activate time
+    time --> anonEmp : String
+    deactivate time
+end
+
+group Argumento de la siguiente operacion
+    group Argumento de la siguiente operacion
+        anonEmp -> time : strftime("%Y") : String
+        activate time
+        time --> anonEmp : String
+        deactivate time
+    end
+    anonEmp -> time : strftime("%d" +"/"+ time.strftime("%Y")) : String
+    activate time
+    time --> anonEmp : String
+    deactivate time
+end
+
+note over anonEmp
+  currentDate = time.strftime("%B") + "/" +time.strftime("%d" +"/"+ time.strftime("%Y"))
+end note
+
+anonEmp -> __txtRenewal : insert(0, currentDate) : void
+activate __txtRenewal
+deactivate __txtRenewal
+
+deactivate anonEmp
+deactivate __builder_app
+deactivate __builder_ptr
+
+deactivate director
+@enduml
