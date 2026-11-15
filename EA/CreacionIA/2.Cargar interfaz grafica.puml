@@ -1,0 +1,187 @@
+@startuml
+actor ":Actor1" as actor
+participant "__cmbSearchType: ttk.Combobox\n<i>(from Cargar interfaz grafica)</i>" as __cmbSearchType
+participant "app: ButtonHandler\n<i>(from Ejecutar aplicacion)</i>" as app
+participant "__frame: SQLBuilderUI\n<i>(from Cargar interfaz grafica)</i>" as __frame
+participant "__pSearchCriteria: Frame\n<i>(from Cargar interfaz grafica)</i>" as __pSearchCriteria
+participant "_searchUI: Frame\n<i>(from Obtener creador de interfaz correspondiente)</i>" as _searchUI_cand
+participant "_searchUI: Frame\n<i>(from Obtener creador de interfaz correspondiente)</i>" as _searchUI_emp
+participant "_searchUI: Frame\n<i>(from Obtener creador de interfaz correspondiente)</i>" as _searchUI_ent
+
+actor -> __cmbSearchType : Seleccionar opcion()
+activate __cmbSearchType
+
+__cmbSearchType -> app : eventCmbSearchType(event) : void
+activate app
+
+app -> __frame : selection = getSearchType(self) : String
+activate __frame
+ref over __frame : Obtener tipo de busqueda
+__frame --> app : selection
+deactivate __frame
+
+alt selection != SQLBuilderUI.BLANK
+
+    create "factory: BuilderFactory" as factory
+    app --> factory : 
+    factory -> factory : __init__(self) : void
+    activate factory
+    deactivate factory
+
+    app -> factory : __builder = getUIBuilder(selection, self.__frame) : Builder
+    activate factory
+    ref over factory : Obtener creador de interfaz correspondiente
+    factory --> app : __builder
+    deactivate factory
+
+    alt selection == SQLBuilderUI.CANDIDATE
+        
+        create "__builder: CandSrchBuilder" as __builderCand
+        app --> __builderCand : 
+
+        create "director: UIDirector" as directorCand
+        app --> directorCand : 
+        directorCand -> directorCand : __init__(__builder) : void
+        activate directorCand
+        create "__builder: CandSrchBuilder" as __ptrCand <<Loader Object>>
+        directorCand --> __ptrCand : 
+        deactivate directorCand
+
+        app -> directorCand : build(self) : void
+        activate directorCand
+        ref over directorCand : Construir interfaz de candidato
+        deactivate directorCand
+
+        app -> __builderCand : UIObj = getSearchUI(self) : Frame
+        activate __builderCand
+        __builderCand --> app : UIObj
+        deactivate __builderCand
+
+        group Argumento de la siguiente operacion
+            create "UIObj: Frame" as UIObjCand <<Loader Object>>
+            app --> UIObjCand : 
+        end
+            
+        app -> __frame : displayNewUI(UIObj) : void
+        activate __frame
+        note right of __frame
+          self.__pSearchCriteria = None
+          self.__pSearchCriteria = panel
+        end note
+        
+        __frame -> __pSearchCriteria : grid(row=2, column=2, padx=10, pady=10) : void
+        activate __pSearchCriteria
+        deactivate __pSearchCriteria
+
+        __pSearchCriteria --> UIObjCand : <<Redirige a>>
+        destroy __pSearchCriteria
+        
+        UIObjCand --> _searchUI_cand : <<Redirige a>>
+        
+        deactivate __frame
+
+    else selection == SQLBuilderUI.EMPLOYER
+        
+        create "__builder: EmpSrchBuilder" as __builderEmp
+        app --> __builderEmp : 
+
+        create "director: UIDirector" as directorEmp
+        app --> directorEmp : 
+        directorEmp -> directorEmp : __init__(__builder) : void
+        activate directorEmp
+        create "__builder: EmpSrchBuilder" as __ptrEmp <<Loader Object>>
+        directorEmp --> __ptrEmp : 
+        deactivate directorEmp
+
+        app -> directorEmp : build(self) : void
+        activate directorEmp
+        ref over directorEmp : Construir interfaz de empleador
+        deactivate directorEmp
+
+        app -> __builderEmp : UIObj = getSearchUI(self) : Frame
+        activate __builderEmp
+        __builderEmp --> app : UIObj
+        deactivate __builderEmp
+
+        group Argumento de la siguiente operacion
+            create "UIObj: Frame" as UIObjEmp <<Loader Object>>
+            app --> UIObjEmp : 
+        end
+            
+        app -> __frame : displayNewUI(UIObj) : void
+        activate __frame
+        note right of __frame
+          self.__pSearchCriteria = None
+          self.__pSearchCriteria = panel
+        end note
+        
+        __frame -> __pSearchCriteria : grid(row=2, column=2, padx=10, pady=10) : void
+        activate __pSearchCriteria
+        deactivate __pSearchCriteria
+
+        __pSearchCriteria --> UIObjEmp : <<Redirige a>>
+        destroy __pSearchCriteria
+        
+        UIObjEmp --> _searchUI_emp : <<Redirige a>>
+        
+        deactivate __frame
+
+    else selection == SQLBuilderUI.ENTERPRISE
+        
+        create "__builder: EnterpriseSrchBuilder" as __builderEnt
+        app --> __builderEnt : 
+
+        create "director: UIDirector" as directorEnt
+        app --> directorEnt : 
+        directorEnt -> directorEnt : __init__(__builder) : void
+        activate directorEnt
+        create "__builder: EnterpriseSrchBuilder" as __ptrEnt <<Loader Object>>
+        directorEnt --> __ptrEnt : 
+        deactivate directorEnt
+
+        app -> directorEnt : build(self) : void
+        activate directorEnt
+        ref over directorEnt : Construir interfaz de empresa
+        deactivate directorEnt
+
+        app -> __builderEnt : UIObj = getSearchUI(self) : Frame
+        activate __builderEnt
+        __builderEnt --> app : UIObj
+        deactivate __builderEnt
+
+        group Argumento de la siguiente operacion
+            create "UIObj: Frame" as UIObjEnt <<Loader Object>>
+            app --> UIObjEnt : 
+        end
+            
+        app -> __frame : displayNewUI(UIObj) : void
+        activate __frame
+        note right of __frame
+          self.__pSearchCriteria = None
+          self.__pSearchCriteria = panel
+        end note
+        
+        __frame -> __pSearchCriteria : grid(row=2, column=2, padx=10, pady=10) : void
+        activate __pSearchCriteria
+        deactivate __pSearchCriteria
+
+        __pSearchCriteria --> UIObjEnt : <<Redirige a>>
+        destroy __pSearchCriteria
+        
+        UIObjEnt --> _searchUI_ent : <<Redirige a>>
+        
+        deactivate __frame
+        
+    end
+
+else selection == SQLBuilderUI.BLANK
+
+    app -> __frame : setSQL("You should select one option above") : void
+    activate __frame
+    deactivate __frame
+
+end
+
+deactivate app
+deactivate __cmbSearchType
+@enduml

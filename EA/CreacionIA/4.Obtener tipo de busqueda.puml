@@ -1,0 +1,15 @@
+@startuml
+participant "__frame: SQLBuilderUI\n<i>(from Cargar interfaz grafica)</i>" as __frame
+participant "__cmbSearchType: ttk.Combobox\n<i>(from Cargar interfaz grafica)</i>" as __cmbSearchType
+
+[-> __frame : selection = getSearchType(self) : String
+activate __frame
+
+__frame -> __cmbSearchType : get(self) : String
+activate __cmbSearchType
+__frame <-- __cmbSearchType : selection
+deactivate __cmbSearchType
+
+[<-- __frame : selection
+deactivate __frame
+@enduml

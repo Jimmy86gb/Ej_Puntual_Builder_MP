@@ -1,0 +1,40 @@
+@startuml
+actor ":Actor1" as actor
+participant "SQLBuilderUI.py" as modulo <<link>>
+
+actor -> modulo : <<execute>>
+activate modulo
+
+modulo -> modulo : main()
+activate modulo
+
+create "root: Tk" as root
+modulo --> root : 
+root -> root : __init__()
+activate root
+deactivate root
+
+modulo -> root : withdraw()
+activate root
+deactivate root
+
+modulo -> root : title("Builder example")
+activate root
+deactivate root
+
+create "app: ButtonHandler" as app
+modulo --> app : 
+app -> app : __init__(root)
+activate app
+
+ref over app : Cargar interfaz grafica
+
+deactivate app
+
+modulo -> root : mainloop()
+activate root
+deactivate root
+
+deactivate modulo
+deactivate modulo
+@enduml

@@ -1,0 +1,138 @@
+@startuml
+participant "factory: BuilderFactory\n<i>(from Seleccionar y ver tipo de busqueda)</i>" as factory
+
+[-> factory : __builder = getUIBuilder(selection, self.__frame) : UIBuilder
+activate factory
+
+alt typeL == SQLBuilderUI.CANDIDATE
+
+    create ": CandSrchBuilder" as __builderCand
+    factory --> __builderCand : 
+    __builderCand -> __builderCand : __init__(frame) : void
+    activate __builderCand
+
+    __builderCand -> __builderCand : UIBuilder.__init__(self, frame) : void
+    activate __builderCand
+    
+    create "_searchUI: Frame" as _searchUI_cand
+    __builderCand --> _searchUI_cand : 
+    _searchUI_cand -> _searchUI_cand : __init__(frame, bd=2, relief=RIDGE) : void
+    activate _searchUI_cand
+    destroy _searchUI_cand
+    
+    deactivate __builderCand
+
+    create "__txtUserName: Entry" as __txtUserName_cand
+    __builderCand --> __txtUserName_cand : 
+    __txtUserName_cand -> __txtUserName_cand : __init__(self._searchUI) : void
+    activate __txtUserName_cand
+    destroy __txtUserName_cand
+
+    create "__txtSkill: Entry" as __txtSkill_cand
+    __builderCand --> __txtSkill_cand : 
+    __txtSkill_cand -> __txtSkill_cand : __init__(self._searchUI) : void
+    activate __txtSkill_cand
+    destroy __txtSkill_cand
+
+    create "__cmbExperience: ttk.Combobox" as __cmbExperience_cand
+    __builderCand --> __cmbExperience_cand : 
+    __cmbExperience_cand -> __cmbExperience_cand : __init__(self._searchUI, state="readonly") : void
+    activate __cmbExperience_cand
+    destroy __cmbExperience_cand
+
+    __builderCand --> factory : CandSrchBuilder
+    deactivate __builderCand
+
+else typeL == SQLBuilderUI.EMPLOYER
+
+    create ": EmpSrchBuilder" as __builderEmp
+    factory --> __builderEmp : 
+    __builderEmp -> __builderEmp : __init__(frame) : void
+    activate __builderEmp
+
+    __builderEmp -> __builderEmp : UIBuilder.__init__(self, frame) : void
+    activate __builderEmp
+    
+    create "_searchUI: Frame" as _searchUI_emp
+    __builderEmp --> _searchUI_emp : 
+    _searchUI_emp -> _searchUI_emp : __init__(frame, bd=2, relief=RIDGE) : void
+    activate _searchUI_emp
+    destroy _searchUI_emp
+    
+    deactivate __builderEmp
+
+    create "__txtUserName: Entry" as __txtUserName_emp
+    __builderEmp --> __txtUserName_emp : 
+    __txtUserName_emp -> __txtUserName_emp : __init__(self._searchUI) : void
+    activate __txtUserName_emp
+    destroy __txtUserName_emp
+
+    create "__txtCity: Entry" as __txtCity_emp
+    __builderEmp --> __txtCity_emp : 
+    __txtCity_emp -> __txtCity_emp : __init__(self._searchUI) : void
+    activate __txtCity_emp
+    destroy __txtCity_emp
+
+    create "__txtRenewal: Entry" as __txtRenewal_emp
+    __builderEmp --> __txtRenewal_emp : 
+    __txtRenewal_emp -> __txtRenewal_emp : __init__(self._searchUI) : void
+    activate __txtRenewal_emp
+    destroy __txtRenewal_emp
+
+    __builderEmp --> factory : EmpSrchBuilder
+    deactivate __builderEmp
+
+else typeL == SQLBuilderUI.ENTERPRISE
+
+    create ": EnterpriseSrchBuilder" as __builderEnt
+    factory --> __builderEnt : 
+    __builderEnt -> __builderEnt : __init__(frame) : void
+    activate __builderEnt
+
+    __builderEnt -> __builderEnt : UIBuilder.__init__(self, frame) : void
+    activate __builderEnt
+    
+    create "_searchUI: Frame" as _searchUI_ent
+    __builderEnt --> _searchUI_ent : 
+    _searchUI_ent -> _searchUI_ent : __init__(frame, bd=2, relief=RIDGE) : void
+    activate _searchUI_ent
+    destroy _searchUI_ent
+    
+    deactivate __builderEnt
+
+    create "__txtEntName: Entry" as __txtEntName_ent
+    __builderEnt --> __txtEntName_ent : 
+    __txtEntName_ent -> __txtEntName_ent : __init__(self._searchUI) : void
+    activate __txtEntName_ent
+    destroy __txtEntName_ent
+
+    create "__txtNIT: Entry" as __txtNIT_ent
+    __builderEnt --> __txtNIT_ent : 
+    __txtNIT_ent -> __txtNIT_ent : __init__(self._searchUI) : void
+    activate __txtNIT_ent
+    destroy __txtNIT_ent
+
+    create "__txtCountry: Entry" as __txtCountry_ent
+    __builderEnt --> __txtCountry_ent : 
+    __txtCountry_ent -> __txtCountry_ent : __init__(self._searchUI) : void
+    activate __txtCountry_ent
+    destroy __txtCountry_ent
+
+    create "__txtAddress: Entry" as __txtAddress_ent
+    __builderEnt --> __txtAddress_ent : 
+    __txtAddress_ent -> __txtAddress_ent : __init__(self._searchUI) : void
+    activate __txtAddress_ent
+    destroy __txtAddress_ent
+
+    __builderEnt --> factory : EnterpriseSrchBuilder
+    deactivate __builderEnt
+
+else default
+
+    [<-- factory : None
+
+end
+
+[<-- factory : UIBuilder
+deactivate factory
+@enduml

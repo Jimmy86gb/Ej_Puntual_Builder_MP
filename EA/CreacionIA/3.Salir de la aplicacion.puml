@@ -1,0 +1,30 @@
+@startuml
+actor ":Actor1" as actor
+participant "__btnExit: Button\n<i>(from Cargar interfaz grafica)</i>" as __btnExit
+participant "app: ButtonHandler\n<i>(from Ejecutar aplicacion)</i>" as app
+participant "__frame: SQLBuilderUI\n<i>(from Cargar interfaz grafica)</i>" as __frame
+participant "__root: Tk\n<i>(from Cargar interfaz grafica)</i>" as __root <<Loader Object>>
+participant "root: Tk\n<i>(from Ejecutar aplicacion)</i>" as root
+
+actor -> __btnExit : Click()
+activate __btnExit
+
+__btnExit -> app : eventBtnExit()
+activate app
+
+app -> __frame : destroy()
+activate __frame
+destroy __frame
+
+app -> __root : destroy()
+activate __root
+
+__root --> root : <<Redirige a>>
+activate root
+destroy root
+
+destroy __root
+
+deactivate app
+deactivate __btnExit
+@enduml
