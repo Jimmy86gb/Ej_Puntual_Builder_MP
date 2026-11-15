@@ -2,3 +2,6 @@ Clases:
 https://share.gemini.google/1yDA91FcDDFh
 Casos:
 https://share.gemini.google/32zJ7vSaYGGh
+Secuencia:
+1-3:
+https://share.gemini.google/6TjClU9Vn1c4
